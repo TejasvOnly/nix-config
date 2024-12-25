@@ -89,12 +89,19 @@
         ];
       };
 
-      nixosConfigurations.test = mkNixosConfiguration {
-        hostname = "test";
+      nixosConfigurations.katana = mkNixosConfiguration {
+        hostname = "katana";
         username = "tejasv";
         modules = [
-          nixos-wsl.nixosModules.wsl
-          ./test.nix
+          ./configuration.nix
+        ];
+      };
+
+      nixosConfigurations.katana-test = mkNixosConfiguration {
+        hostname = "katana";
+        username = "tejasv";
+        modules = [
+          ./hyprland-test.nix
         ];
       };
     };
