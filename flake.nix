@@ -85,7 +85,7 @@
         username = "tejasv";
         modules = [
           nixos-wsl.nixosModules.wsl
-          ./wsl.nix
+          ./hosts/wsl
         ];
       };
 
@@ -93,15 +93,7 @@
         hostname = "katana";
         username = "tejasv";
         modules = [
-          ./configuration.nix
-        ];
-      };
-
-      nixosConfigurations.katana-test = mkNixosConfiguration {
-        hostname = "katana";
-        username = "tejasv";
-        modules = [
-          ./hyprland-test.nix
+          ./hosts/katana
         ];
       };
     };

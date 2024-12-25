@@ -3,25 +3,24 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   username,
-  hostname,
+  self,
   pkgs,
-  inputs,
   ...
 }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./system/time.nix
-    ./system/i18n.nix
-    ./system/udev.nix
-    ./system/bootloader.nix
-    ./system/networking.nix
-    ./system/fonts.nix
-    ./system/display_manager.nix
-    ./system/ld.nix
-    ./system/shell.nix
-    ./system/nix.nix
-    ./system/user.nix
+    (self + /system/time.nix)
+    (self + /system/i18n.nix)
+    (self + /system/udev.nix)
+    (self + /system/bootloader.nix)
+    (self + /system/networking.nix)
+    (self + /system/fonts.nix)
+    (self + /system/display_manager.nix)
+    (self + /system/ld.nix)
+    (self + /system/shell.nix)
+    (self + /system/nix.nix)
+    (self + /system/user.nix)
   ];
 
   # TODO: Move hyprland to home manager
@@ -74,7 +73,7 @@
 
   home-manager.users.${username} = {
     imports = [
-      ./home
+      (self + /home)
     ];
   };
 

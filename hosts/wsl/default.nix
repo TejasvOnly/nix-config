@@ -4,16 +4,16 @@
   username,
   hostname,
   pkgs,
-  inputs,
+  self,
   ...
 }: {
   imports = [
-    ./system/time.nix
-    ./system/ld.nix
-    ./system/shell.nix
-    ./system/udev.nix
-    ./system/nix.nix
-    ./system/user.nix
+    (self + /system/time.nix)
+    (self + /system/ld.nix)
+    (self + /system/shell.nix)
+    (self + /system/udev.nix)
+    (self + /system/nix.nix)
+    (self + /system/user.nix)
   ];
 
   # TODO: consolidate into a nix module
@@ -26,7 +26,7 @@
 
   home-manager.users.${username} = {
     imports = [
-      ./home
+      (self + /home)
     ];
   };
 
