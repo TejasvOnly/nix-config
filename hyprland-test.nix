@@ -16,26 +16,22 @@
     ./system/udev.nix
     ./system/bootloader.nix
     ./system/networking.nix
+    ./system/fonts.nix
+    ./system/display_manager.nix
+    ./system/ld.nix
+    ./system/shell.nix
+    ./system/nix.nix
+    ./system/user.nix
   ];
 
-  # Directly start hyprland
-  services.greetd = {
-    enable = true;
-    settings = rec {
-      initial_session = {
-        command = "${pkgs.hyprland}/bin/Hyprland";
-        user = username;
-      };
-      default_session = initial_session;
-    };
-  };
-
+  # TODO: Move hyprland to home manager
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
   };
 
-  security.pam.services.swaylock = {};
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
@@ -46,11 +42,6 @@
     nvidia.modesetting.enable = true;
   };
 
-  #Fonts
-  fonts.fonts = with pkgs; [
-    (nerdfonts.override {fonts = ["FiraCode" "DroidSansMono" "GeistMono"];})
-  ];
-
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -58,10 +49,10 @@
   boot.extraModprobeConfig = ''
     options snd-intel-dspcfg dsp_driver=1
   '';
-
   sound.enable = true;
   hardware.pulseaudio.enable = true;
   hardware.enableAllFirmware = true;
+
   # security.rtkit.enable = true;
   # services.pipewire = {
   #   enable = true;
@@ -76,34 +67,10 @@
   #   media-session.enable = true;
   # };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # FIXME: change your shell here if you don't want fish
-  programs.fish.enable = true;
-  programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [
-    libusb1
-    hidapi
-    systemd
-  ];
-  environment.pathsToLink = ["/share/fish"];
-  environment.shells = [pkgs.fish];
-  environment.enableAllTerminfo = true;
-
   security.sudo.wheelNeedsPassword = false;
 
   # FIXME: uncomment the next line to enable SSH
   # services.openssh.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${username} = {
-    isNormalUser = true;
-    # FIXME: change your shell here if you don't want fish
-    shell = pkgs.fish;
-    extraGroups = ["networkmanager" "wheel" "audio" "dialout" "plugdev" "randomtestgroup"];
-    description = "Tejasv Sharma";
-  };
 
   home-manager.users.${username} = {
     imports = [
@@ -141,12 +108,9 @@
     pkgs.networkmanagerapplet
     pkgs.swaylock
   ];
-
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+  security.pam.services.swaylock = {};
 
   services.pcscd.enable = true;
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -166,38 +130,4 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-
-  nix = {
-    settings = {
-      trusted-users = [username];
-      # FIXME: use your access tokens from secrets.json here to be able to clone private repos on GitHub and GitLab
-      # access-tokens = [
-      #   "github.com=${secrets.github_token}"
-      #   "gitlab.com=OAuth2:${secrets.gitlab_token}"
-      # ];
-
-      accept-flake-config = true;
-      auto-optimise-store = true;
-    };
-
-    registry = {
-      nixpkgs = {
-        flake = inputs.nixpkgs;
-      };
-    };
-
-    nixPath = [
-      "nixpkgs=${inputs.nixpkgs.outPath}"
-      "nixos-config=/etc/nixos/configuration.nix"
-      "/nix/var/nix/profiles/per-user/root/channels"
-    ];
-
-    package = pkgs.nixFlakes;
-    extraOptions = ''experimental-features = nix-command flakes'';
-
-    gc = {
-      automatic = true;
-      options = "--delete-older-than 15d";
-    };
-  };
 }
