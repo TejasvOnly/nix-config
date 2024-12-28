@@ -38,8 +38,22 @@
 
   hardware = {
     opengl.enable = true;
-    nvidia.modesetting.enable = true;
+    nvidia = {
+      modesetting.enable = true;
+      powerManagement.enable = false;
+      powerManagement.finegrained = false;
+      open = true;
+      nvidiaSettings = true;
+
+      prime = {
+        sync.enable = true;
+        intelBusId = "PCI:0:2:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
+    };
   };
+
+  services.xserver.videoDrivers = ["nvidia"];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -90,12 +104,16 @@
       })
     )
 
+    pkgs.wl-clipboard
+
     pkgs.dunst
     pkgs.libnotify
     pkgs.kitty
 
     pkgs.wofi
     pkgs.networkmanagerapplet
+    pkgs.brightnessctl
+
     pkgs.swaylock
   ];
   security.pam.services.swaylock = {};
