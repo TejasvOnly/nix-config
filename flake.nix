@@ -96,5 +96,13 @@
           ./hosts/katana
         ];
       };
+
+      nixosConfigurations.matebook = mkNixosConfiguration {
+        hostname = "matebook";
+        username = "tejasv";
+        modules = [
+          ./hosts/matebook
+        ];
+      };
     };
 }
