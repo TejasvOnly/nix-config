@@ -37,7 +37,7 @@
   };
 
   hardware = {
-    opengl.enable = true;
+    graphics.enable = true;
   };
 
   # Enable CUPS to print documents.
@@ -66,6 +66,8 @@
       (self + /home)
     ];
   };
+
+  virtualisation.waydroid.enable = true;
 
   system.stateVersion = "24.05";
 

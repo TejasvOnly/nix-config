@@ -1,7 +1,6 @@
 {
   username,
   inputs,
-  pkgs,
   ...
 }: {
   nix = {
@@ -29,7 +28,6 @@
       "/nix/var/nix/profiles/per-user/root/channels"
     ];
 
-    package = pkgs.nixFlakes;
     extraOptions = ''experimental-features = nix-command flakes'';
 
     gc = {
