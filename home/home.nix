@@ -74,6 +74,7 @@
 
     # clipboard
     xclip
+    slack
   ];
 in {
   imports = [

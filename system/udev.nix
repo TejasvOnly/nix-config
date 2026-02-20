@@ -20,6 +20,17 @@
       (
         pkgs.writeTextFile
         {
+          name = "charachorder-2-udev";
+          text = ''
+            SUBSYSTEM=="usb", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="8253", MODE="0666"
+            SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="8253", GROUP="dialout" MODE="0666"
+          '';
+          destination = "/etc/udev/rules.d/50-charachorder.rules";
+        }
+      )
+      (
+        pkgs.writeTextFile
+        {
           name = "40-dfuse.rules";
           text = ''
             ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", MODE="664", GROUP="plugdev"

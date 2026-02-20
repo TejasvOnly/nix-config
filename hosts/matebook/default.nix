@@ -10,6 +10,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    # And other system modules
     (self + /system/time.nix)
     (self + /system/i18n.nix)
     (self + /system/udev.nix)
@@ -29,6 +30,8 @@
     xwayland.enable = true;
   };
 
+  programs.adb.enable = true;
+
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
@@ -39,6 +42,13 @@
   hardware = {
     graphics.enable = true;
   };
+
+  # Enable bluetooth
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+  services.blueman.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -71,14 +81,9 @@
 
   system.stateVersion = "24.05";
 
-  # Install firefox.
-  programs.firefox.enable = true;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
     pkgs.libfido2
 
     # hyprland
@@ -102,8 +107,17 @@
     pkgs.brightnessctl
 
     pkgs.swaylock
+    pkgs.ledger-live-desktop
   ];
+
+  hardware.ledger.enable = true;
   security.pam.services.swaylock = {};
+
+  virtualisation.docker = {
+    enable = true;
+    enableOnBoot = true;
+    autoPrune.enable = true;
+  };
 
   services.pcscd.enable = true;
   # Some programs need SUID wrappers, can be configured further or are

@@ -16,7 +16,7 @@
         navigate = true;
       };
       userEmail = "tejasvonly@gmail.com";
-      userName = "Tejasv Sharma";
+      userName = "Tejasv";
       extraConfig = {
         # url = {
         #   "https://${secrets.git_username}:${secrets.github_token}@github.com" = {

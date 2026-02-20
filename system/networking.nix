@@ -9,6 +9,12 @@
   networking.networkmanager.enable = true;
   networking.hostName = "${hostname}";
 
+  # for wireguard
+  networking.firewall.checkReversePath = false;
+
+  # dns
+  networking.nameservers = ["1.1.1.1" "9.9.9.9"];
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
