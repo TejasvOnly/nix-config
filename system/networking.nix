@@ -13,7 +13,13 @@
   networking.firewall.checkReversePath = false;
 
   # dns
-  networking.nameservers = ["1.1.1.1" "9.9.9.9"];
+  networking.nameservers = ["8.8.8.8" "1.1.1.1"];
+
+  # don't try to resolve dns by networkmanager
+  networking.networkmanager.dns = "none";
+
+  # disable the EDNS mechanism which often breaks on older routers
+  networking.resolvconf.dnsExtensionMechanism = false;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
